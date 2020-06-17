@@ -1,0 +1,183 @@
+﻿@using WebTraSua1.Models
+@{
+    ViewBag.Title = "Giỏ hàng";
+    var session = Session["CartItem"] as List<CartModel>;
+}
+
+<section class="main-content-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!-- BSTORE-BREADCRUMB START -->
+                <div class="bstore-breadcrumb">
+                    <a href="@Url.Action("Index", "Home")">HOME</a>
+                    <span><i class="fa fa-caret-right	"></i></span>
+                    <span>GIỎ HÀNG</span>
+                </div>
+                <!-- BSTORE-BREADCRUMB END -->
+            </div>
+        </div>
+        <div class="row">
+            @if (session != null)
+            {
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!-- SHOPPING-CART SUMMARY START -->
+                    <h2 class="page-title">
+                        <span class="shop-pro-item">
+                            Your shopping cart
+                            contains: <span style="color: #ff0000;">@session.Count</span> item(s)
+                        </span>
+                    </h2>
+                    <!-- SHOPPING-CART SUMMARY END -->
+                </div>
+
+                decimal total = 0, subtotal = 0;
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="cart-summary">
+                            <thead>
+                                <tr>
+                                    <th class="cart-product">ID</th>
+                                    <th class="cart-product">Sản phẩm</th>
+                                    <th class="cart-description">Tên sản phẩm</th>
+                                    <th class="cart-description">Size</th>
+                                    <th class="cart-unit text-right">Giá</th>
+                                    <th class="cart_quantity text-center">Số lượng</th>
+                                    <th class="cart-delete">Tuỳ chọn</th>
+                                    <th class="cart-total text-right">Tổng tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in session)
+                                {
+                                    subtotal = 0;
+                                    <tr>
+                                        <td class="cart_quantity text-center">
+                                            <span>@item.SP.MaSP</span>
+                                        </td>
+                                        <td class="cart-product">
+                                            <a href="@Url.Action("ChiTietSanPham", "Shop", new {id = item.SP.MaSP})">
+                                                <img alt="@item.SP.TenSP" src="@item.SP.AnhSP">
+                                            </a>
+                                        </td>
+                                        <td class="cart-description">
+                                            <p class="product-name">
+                                                <a href="@Url.Action("ChiTietSanPham", "Shop", new {id = item.SP.MaSP})">
+                                                    @item.SP.TenSP
+                                                </a>
+                                            </p>
+                                        </td>
+                                        <td class="cart-unit">
+                                            <ul class="price text-right">
+                                                <li class="price">@item.size.TenSize</li>
+                                            </ul>
+                                        </td>
+                                        <td class="cart-unit">
+                                            <ul class="price text-right">
+                                                <li class="price">@item.SP.GiaSP.ToString("#,##0") vnđ</li>
+                                            </ul>
+                                        </td>
+                                        <td class="cart_quantity text-center">
+                                            <div class="cart-plus-minus-button">
+                                                <span>@item.Quantity</span>
+                                            </div>
+                                        </td>
+                                        <td class="cart-delete text-center">
+                                            <span>
+                                                <a href="@Url.Action("DeleteItem", "Cart", new {
+                                                    id = item.SP.MaSP,
+                                                    size = item.size.MaSize,
+                                                    url = Request.Url.AbsoluteUri
+                                                })" class="cart_quantity_delete" title="Delete">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </span>
+                                        </td>
+                                        @{
+                                            subtotal = (item.SP.GiaSP * item.Quantity);
+                                            total += subtotal;
+                                        }
+                                        <td class="cart-total">
+                                            <span class="price">@subtotal.ToString("#,##0") vnđ</span>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                            <!-- TABLE BODY END -->
+                            <!-- TABLE FOOTER START -->
+                            <tfoot>
+                                <tr class="cart-total-price">
+                                    <td class="cart_voucher" colspan="3" rowspan="4"></td>
+                                    <td class="text-center" colspan="3">Total products (tax excl.)</td>
+                                    <td id="total_product" class="price" colspan="1">@total.ToString("#,##0") đ</td>
+                                </tr>
+                                <tr>
+                                    <td class="total-price-container text-center" colspan="3" rowspan="4">
+                                        <span>Tổng tiền</span>
+                                    </td>
+                                    <td id="total-price-container" class="price" colspan="1">
+                                        <span id="total-price">@total.ToString("#,##0") đ</span>
+                                    </td>
+                                </tr>
+                                @*<tr class="cart-total-price">
+                                        <td class="total-price-container" text-center colspan="6" rowspan="6">TOTAL</td>
+                                        <td id="total-price-container" class="price" colspan="1">
+                                            <span id="total-price">@total.ToString("#,##0") d</span>
+                                        </td>
+                                    </tr>*@
+                            </tfoot>
+                            <!-- TABLE FOOTER END -->
+                        </table>
+                        <!-- TABLE END -->
+                    </div>
+                    <!-- CART TABLE_BLOCK END -->
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!-- RETURNE-CONTINUE-SHOP START -->
+                    <div class="returne-continue-shop">
+                        <a href="@Url.Action("DanhSachSanPham", "Shop")" class="continueshoping">
+                            <i class="fa fa-chevron-left"></i>Về cửa hàng
+                        </a>
+                        <a href="@Url.Action("CheckOut", "Cart")" class="procedtocheckout">
+                            Xác nhận để đặt hàng<i class="fa fa-chevron-right"></i>
+                        </a>
+                    </div>
+                    <!-- RETURNE-CONTINUE-SHOP END -->
+                </div>
+            }
+            else
+            {
+                <div>
+                    <h2>Chưa có sản phẩm nào trong giỏ hàng</h2>
+                </div>
+                <div class="returne-continue-shop">
+                    <a href="@Url.Action("DanhSachSanPham", "Shop")" class="continueshoping">
+                        <i class="fa fa-chevron-left"></i>Tiếp tục mua sắm
+                    </a>
+                </div>
+                @*<a href="@Url.Action("DanhSachSanPham", "Shop")"><h1>Go to shop</h1></a>*@
+            }
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script>
+        @*$(document).ready(function(){
+            $("#CheckOut").click(function () {
+
+                $.get("@Url.Action("CheckOut", "Cart")",
+                    {
+                        "TongTien": $("#total-price").val()
+                    },
+                    function (data) {
+                        console.log(data);
+                    }
+                );
+            });
+        });*@
+    </script>
+}
+

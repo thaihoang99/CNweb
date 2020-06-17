@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "Đăng ký-Đăng nhập";
+}
+
+<section class="main-content-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!-- BSTORE-BREADCRUMB START -->
+                <div class="bstore-breadcrumb">
+                    <a href="@Url.Action("Index", "Home")">Trang chủ</a>
+                    <span><i class="fa fa-caret-right"></i></span>
+                    <span>Đăng ký / Đăng nhập</span>
+                </div>
+                <!-- BSTORE-BREADCRUMB END -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h2 class="page-title">Đăng ký / Đăng nhập</h2>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <!-- CREATE-NEW-ACCOUNT START -->
+                <div class="create-new-account">
+                    <form class="new-account-box primari-box" id="create-new-account" method="post" action="#">
+                        <h3 class="box-subheading">Tạo tài khoản</h3>
+                        <div class="form-content">
+                            <p>
+                                Vui lòng điền thông tin của bạn.
+                            </p>
+                            <p>* bắt buộc phải có.</p>
+                            <div class="form-group primary-form-group">
+                                <!--username-->
+                                <div>
+                                    <label>Tài khoản*</label>
+                                </div>
+                                <div>
+                                    <input type="text" value="" name="reg-username" id="reg-username" class="form-control input-feild">
+                                </div>
+
+                                <!--passs-->
+                                <div>
+                                    <label>Mật khẩu*</label>
+                                </div>
+                                <div>
+                                    <input type="password" value="" name="reg-password" id="reg-password" class="form-control input-feild">
+                                </div>
+                                <!--confirm pass-->
+                                <div>
+                                    <label>Xác nhận mật khẩu*</label>
+                                </div>
+                                <div>
+                                    <input type="password" value="" name="confirm-pass" id="confirm-pass" class="form-control input-feild">
+                                </div>
+                                <label for="reg-fullname">Tên người dùng*</label>
+                                <input type="text" value="" name="reg-fullname" id="reg-fullname" class="form-control input-feild">
+                                <label for="reg-email">Email</label>
+                                <input type="text" value="" name="reg-email" id="reg-email" class="form-control input-feild" required>
+                                <label for="reg-phone">SDT</label>
+                                <input type="tel" value="" name="reg-phone" id="reg-phone" class="form-control input-feild">
+
+                            </div>
+                            <div class="alert alert-success" role="alert" id="alert-text-reg">
+                            </div>
+                            <div class="submit-button" id="alert-text-reg">
+                                <button type="submit" id="SubmitCreate" class="btn main-btn">
+                                    <span>
+                                        <i class="fa fa-user submit-icon"></i>
+                                        Tạo tài khoản
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- CREATE-NEW-ACCOUNT END -->
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <!-- REGISTERED-ACCOUNT START -->
+                <div class="primari-box registered-account">
+                    <form class="new-account-box" id="accountLogin" method="post" action="#">
+                        <h3 class="box-subheading">ĐĂNG NHẬP</h3>
+                        <div class="form-content">
+                            <div class="form-group primary-form-group">
+                                <label for="login-username">Tài khoản</label>
+                                <input type="text" value="" name="log-username" id="log-username" class="form-control input-feild">
+                            </div>
+                            <div class="form-group primary-form-group">
+                                <label for="login-password">Mật khẩu</label>
+                                <input type="password" value="" name="log-password" id="log-password" class="form-control input-feild">
+                            </div>
+                            <div class="forget-password">
+                                <p><a href="#">Quên mật khẩu?</a></p>
+                            </div>
+                            <div class="alert alert-danger" role="alert" id="alert-text">
+                            </div>
+                            <div class="submit-button">
+                                <button type="submit" class="btn main-btn">
+                                    <span>
+                                        <i class="fa fa-lock submit-icon"></i>
+                                        Đăng nhập
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- REGISTERED-ACCOUNT END -->
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#alert-text").hide();
+            $("#alert-text-reg").hide();
+            $("#create-new-account").validate({
+                rules: {
+                    "reg-username": "required",
+                    "reg-password": {
+                        required: true,
+                        minlength: 6
+                    },
+                    "confirm-pass": {
+                        equalTo: "#reg-password"
+                    },
+                    "reg-phone": {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 11
+                    },
+                },
+                messages: {
+                    "reg-username": "Vui lòng nhập tài khoản",
+                    "reg-password": {
+                        required: "Vui lòng nhập password",
+                        minlength: "Password quá ngắn!"
+                    },
+                    "confirm-pass": {
+                        equalTo: "Mật khẩu không trùng khớp"
+                    },
+                    "reg-phone": "Số điện thoại không hợp lệ"
+                },
+                submitHandler: function () {
+                    $.post("@Url.Action("DangKy", "Customer")",
+                        {
+                            "TaiKhoan": $("#reg-username").val(),
+                            "MatKhau": $("#reg-password").val(),
+                            "Email": $("#reg-email").val(),
+                            "TenKH": $("#reg-fullname").val(),
+                            "SDT": $("#reg-phone").val(),
+                            "DiaChi": $("#reg-address").val()
+                        },
+                        function (data) {
+                            if (data == 1) {
+                                console.log(data);
+                                $("#alert-text-reg").show();
+                                $("#alert-text-reg").text("Tạo tài khoản không thành công");
+                            } else {
+                                $("#alert-text-reg").show();
+                                $("#alert-text-reg").text("Tạo tài khoản thành công");
+                            }
+                        }
+                    );
+                }
+            });
+            $("#accountLogin").validate({
+                rules: {
+                    "log-username": "required",
+                    "log-password": {
+                        required: true,
+                        minlength: 6
+                    }
+                },
+                messages: {
+                    "log-username": "Vui lòng nhập tài khoản",
+                    "log-password": {
+                        required: "Vui lòng nhập password",
+                        minlength: "Password quá ngắn!"
+                    }
+                },
+                submitHandler: function () {
+                    $.post("@Url.Action("DangNhap", "Customer")",
+                        {
+                            "UserName": $("#log-username").val(),
+                            "UserPassword": $("#log-password").val()
+                        },
+                        function (data) {
+                            if (data == 1) {
+                                window.location.href = "@Url.Action("Index", "Home")";
+                            } else {
+                                $("#alert-text").show();
+                                $("#alert-text").text("Tài khoản hoặc mật khẩu không đúng");
+                            }
+                        }
+                    );
+                }
+            });
+        });
+    </script>
+}
+

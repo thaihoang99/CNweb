@@ -1,0 +1,290 @@
+﻿@using WebTraSua1.Models
+@{
+    var session = Session["CartItem"] as List<CartModel>;
+    string cookiename = HttpContext.Current.User.Identity.Name;
+}
+
+<header>
+    <div class="header-top">
+        <div class="container">
+            <div class="row">
+                <!-- HEADER-LEFT-MENU START -->
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="header-left-menu">
+                        <div class="welcome-info">
+                            Welcome to <span>Website</span>
+                        </div>
+                        <!--Bổ sung sau nếu cần thiết-->
+                        <!-- <div class="currenty-converter">
+                            <form method="post" action="#" id="currency-set">
+                                <div class="current-currency">
+                                    <span class="cur-label">Currency : </span><strong>VND</strong>
+                                </div>
+                                <ul class="currency-list currency-toogle">
+                                    <li>
+                                        <a title="Dollar (USD)" href="#">Dollar (USD)</a>
+                                    </li>
+                                    <li>
+                                        <a title="Euro (EUR)" href="#">Viet nam dong (VND)</a>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div> -->
+                        @*<div class="selected-language">
+                                <div class="current-lang">
+                                    <span class="current-lang-label">Ngôn ngữ : </span><strong>Vietnamese</strong>
+                                </div>
+                                <ul class="languages-choose language-toogle">
+                                    <li>
+                                        <a href="#" title="English">
+                                            <span>English</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" title="Vietnamese">
+                                            <span>Vietnamese</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>*@
+                    </div>
+                </div>
+                <!-- HEADER-LEFT-MENU END -->
+                <!-- HEADER-RIGHT-MENU START -->
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="header-right-menu">
+                        <nav>
+                            <ul class="list-inline">
+                                @if (string.IsNullOrEmpty(cookiename))
+                                {
+                                    <li><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+                                    <li><a href="@Url.Action("DanhSachSanPham", "Shop")">Cửa hàng</a></li>
+                                    <li><a href="@Url.Action("Contact", "Home")">Liên hệ</a></li>
+                                    <li><a href="@Url.Action("DangKyDangNhap", "Customer")">Đăng nhập</a></li>
+                                    @*<li><a href="@Url.Action("DangKyDangNhap", "Customer")">Tài khoản của tôi</a></li>*@
+                                }
+                                else
+                                {
+                                    <li><a href="javascript:void(0)">Xin chào @cookiename</a></li>
+                                    <li><a href="#">Tài khoản của tôi</a></li>
+                                    <li><a id="log-out" href="@Url.Action("Logout", "Customer")">Đăng xuất</a></li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- HEADER-RIGHT-MENU END -->
+            </div>
+        </div>
+    </div>
+    <!-- HEADER-TOP END -->
+    <!-- HEADER-MIDDLE START -->
+    <section class="header-middle">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- LOGO START -->
+                    <div class="logo">
+                        <a href="@Url.Action("Index", "Home")">
+                            <img src="https://res.cloudinary.com/roy139/image/upload/v1585824301/logo1_eqx9zi.png"
+                                 width="200px" height="91px" alt="LOGO" />
+                        </a>
+                    </div>
+                    <!-- LOGO END -->
+                    <!-- HEADER-RIGHT-CALLUS START -->
+                    <div class="header-right-callus">
+                        <h3>Hotline</h3>
+                        <span>0123.456.789</span>
+                    </div>
+                    <!-- HEADER-RIGHT-CALLUS END -->
+                    <!-- CATEGORYS-PRODUCT-SEARCH START -->
+                    <div class="categorys-product-search">
+                        <form action="@Url.Action("DanhSachSanPham", "Shop")" method="get" class="search-form-cat">
+                            <div class="search-product form-group">
+                                <input type="text" class="form-control search-form" name="search"
+                                       placeholder="Enter your search key ... " />
+                                <button class="search-button" value="Search" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- CATEGORYS-PRODUCT-SEARCH END -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- HEADER-MIDDLE END -->
+    <!-- MAIN-MENU-AREA START -->
+    <header class="main-menu-area">
+        <div class="container">
+            <div class="row">
+                <!-- SHOPPING-CART START -->
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 pull-right shopingcartarea">
+                    <div class="shopping-cart-out pull-right">
+                        <div class="shopping-cart">
+                            @if (session != null)
+                            {
+                                decimal total = 0, subtotal = 0;
+                                <a id="view-cart" class="shop-link" href="@Url.Action("Cart", "Cart")" title="View my shopping cart">
+                                    <i class="fa fa-shopping-cart cart-icon"></i>
+                                    <b>giỏ hàng của tôi</b>
+                                    <span class="ajax-cart-quantity">@session.Count</span>
+                                </a>
+                                <div class="shipping-cart-overly">
+                                    @foreach (var item in session)
+                                    {
+                                        subtotal = 0;
+                                        <div class="shipping-item">
+                                            <a href="@Url.Action("DeleteItem", "Cart", new {
+                                                    id = item.SP.MaSP,
+                                                    size = item.size.MaSize,
+                                                    url = Request.Url.AbsoluteUri
+                                                })" id="delete-button">
+                                                <span class="cross-icon"><i class="fa fa-times-circle"></i></span>
+                                            </a>
+
+                                            <div class="shipping-item-text">
+                                                <span>
+                                                    @item.Quantity <span class="pro-quan-x">x</span> <a href="javascript:void(0)" class="pro-cat">
+                                                        @item.SP.TenSP
+                                                    </a>
+                                                </span>
+                                                <span class="pro-quality">
+                                                    <a href="javascript:void(0)">
+                                                        Size: @item.size.TenSize
+                                                    </a>
+                                                </span>
+                                                @{
+                                                    subtotal = item.SP.GiaSP * item.Quantity;
+                                                    total += subtotal;
+                                                }
+                                                <p>@subtotal vnđ</p>
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="shipping-total-bill">
+                                        @*<div class="cart-prices">
+                                                <span class="shipping-cost">10000 vnđ</span>
+                                                <span>Phí ship</span>
+                                            </div>*@
+                                        <div class="total-shipping-prices">
+                                            <span class="shipping-total">@total</span>
+                                            <span>Tổng tiền</span>
+                                        </div>
+                                    </div>
+                                    <div class="shipping-checkout-btn">
+                                        <a href="@Url.Action("Cart", "Cart")">THANH TOÁN <i class="fa fa-chevron-right"></i></a>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <a class="shop-link" href="@Url.Action("Cart", "Cart")" title="View my shopping cart">
+                                    <i class="fa fa-shopping-cart cart-icon"></i>
+                                    <b>giỏ hàng của tôi</b>
+                                    <span class="ajax-cart-quantity">0</span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <!-- SHOPPING-CART END -->
+                <!-- MAINMENU START -->
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 no-padding-right menuarea">
+                    <div class="mainmenu">
+                        <nav>
+                            <ul class="list-inline mega-menu">
+                                <li class="active"><a href="@Url.Action("Index", "Home")">Trang chủ</a>
+                                <li>
+                                    <a href="@Url.Action("DanhSachSanPham", "Shop")">Cửa hàng</a>
+                                    <!-- DRODOWN-MEGA-MENU START -->
+                                    <div class="drodown-mega-menu">
+                                        <div class="left-mega col-xs-6">
+                                            <div class="mega-menu-list">
+                                                <ul id="navbar-data"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><a href="@Url.Action("Contact", "Home")">Liên hệ</a></li>
+                                <li><a href="@Url.Action("About", "Home")">Về chúng tôi</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- MAINMENU END -->
+            </div>
+            <div class="row">
+                <!-- MOBILE MENU START -->
+                <div class="col-sm-12 mobile-menu-area">
+                    <div class="mobile-menu hidden-md hidden-lg" id="mob-menu">
+                        <span class="mobile-menu-title">MENU</span>
+                        <nav>
+                            <ul>
+                                <li><a href="index.html">Trang chủ</a></li>
+                                <li>
+                                    <a href="shop-gird.html">Sách</a>
+                                    <ul>
+                                        <li>
+                                            <a href="shop-gird.html">Tops</a>
+                                            <ul>
+                                                <li><a href="shop-gird.html">Sách</a></li>
+                                                <li><a href="shop-gird.html">Sách</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="shop-gird.html">Sách</a>
+                                            <ul>
+                                                <li><a href="shop-gird.html">Sách</a></li>
+                                                <li><a href="shop-gird.html">Sách</a></li>
+                                                <li><a href="shop-gird.html">Sách</a></li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="shop-gird.html">Sách</a>
+                                    <ul>
+                                        <li>
+                                            <a href="shop-gird.html">Sách</a>
+                                            <ul>
+                                                <li><a href="shop-gird.html">Sports</a></li>
+                                                <li><a href="shop-gird.html">Day</a></li>
+                                                <li><a href="shop-gird.html">Evening</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="shop-gird.html">Sáchs</a>
+                                            <ul>
+                                                <li><a href="shop-gird.html">Handbag</a></li>
+                                                <li><a href="shop-gird.html">Headphone</a></li>
+                                                <li><a href="shop-gird.html">Houseware</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="shop-gird.html">Accessories</a>
+                                            <ul>
+                                                <li><a href="shop-gird.html">Houseware</a></li>
+                                                <li><a href="shop-gird.html">Home</a></li>
+                                                <li><a href="shop-gird.html">Health & Beauty</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="shop-gird.html">sách</a></li>
+                                <li><a href="shop-gird.html">tops</a></li>
+                                <li><a href="shop-gird.html">sách</a></li>
+                                <li><a href="#">sách</a></li>
+                                <li><a href="about-us.html">About us</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- MOBILE MENU END -->
+            </div>
+        </div>
+    </header>
+</header>
+

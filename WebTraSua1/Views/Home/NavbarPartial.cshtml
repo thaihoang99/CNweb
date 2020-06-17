@@ -1,0 +1,9 @@
+﻿@model IEnumerable<WebTraSua1.Models.Models.TheLoai>
+
+@foreach (var item in Model)
+{
+    <li>
+        <a href="@Url.Action("DanhSachPhanLoai", "Shop", new { maphanloai = item.MaTL})">@item.TenTL</a>
+    </li>
+}
+

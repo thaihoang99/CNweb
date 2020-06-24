@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <!--All css here-->
+    <!-- animate CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/animate.css">
+
+    <!-- FANCYBOX CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/jquery.fancybox.css">
+
+    <!-- BXSLIDER CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/jquery.bxslider.css">
+
+    <!-- MEANMENU CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/meanmenu.min.css">
+
+    <!-- JQUERY-UI-SLIDER CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/jquery-ui-slider.css">
+
+    <!-- NIVO SLIDER CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/nivo-slider.css">
+
+    <!-- OWL CAROUSEL CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/owl.carousel.css">
+
+    <!-- OWL CAROUSEL THEME CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/owl.theme.css">
+
+    <!-- BOOTSTRAP CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/bootstrap.min.css">
+
+    <!-- FONT AWESOME CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/font-awesome.min.css">
+
+    <!-- NORMALIZE CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/normalize.css">
+
+    <!-- MAIN CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/main.css">
+
+    <!-- STYLE CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/style.css">
+
+    <!-- RESPONSIVE CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/responsive.css">
+
+    <!-- IE CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/Assets/css/ie.css">
+
+    <!-- MODERNIZR JS
+        ============================================ -->
+    <script src="~/Assets/js/vendor/modernizr-2.6.2.min.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        @Html.Partial("_Navbar")
+
+        @RenderBody()
+
+        @Html.Partial("_Footer")
+    </div>
+
+    <!--All JS here-->
+    <!-- jquery js -->
+    <script src="~/Assets/js/vendor/jquery-1.11.3.min.js"></script>
+
+    <!-- fancybox js -->
+    <script src="~/Assets/js/jquery.fancybox.js"></script>
+
+    <!-- bxslider js -->
+    <script src="~/Assets/js/jquery.bxslider.min.js"></script>
+
+    <!-- meanmenu js -->
+    <script src="~/Assets/js/jquery.meanmenu.js"></script>
+
+    <!-- owl carousel js -->
+    <script src="~/Assets/js/owl.carousel.min.js"></script>
+
+    <!-- nivo slider js -->
+    <script src="~/Assets/js/jquery.nivo.slider.js"></script>
+
+    <!-- jqueryui js -->
+    <script src="~/Assets/js/jqueryui.js"></script>
+
+    <!-- bootstrap js -->
+    <script src="~/Assets/js/bootstrap.min.js"></script>
+
+    <!-- wow js -->
+    <script src="~/Assets/js/wow.js"></script>
+    <script>
+        new WOW().init();
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".partial-content").each(function (index, item) {
+                var url = $(item).data("url");
+                if (url && url.length > 0) {
+                    $(item).load(url);
+                }
+            });
+
+             $.get("@Url.Action("NavbarPartial", "Home")", function (data) {
+                 $("#navbar-data").append(data);
+            });
+        })
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

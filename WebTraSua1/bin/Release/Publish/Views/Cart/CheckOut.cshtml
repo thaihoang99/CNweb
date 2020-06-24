@@ -1,0 +1,104 @@
+﻿@model WebTraSua1.Models.Models.KhachHang
+@{
+    ViewBag.Title = "CheckOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="main-content-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!-- BSTORE-BREADCRUMB START -->
+                <div class="bstore-breadcrumb">
+                    <a href="@Url.Action("Index", "Home")">HOME</a>
+                    <span><i class="fa fa-caret-right	"></i></span>
+                    <span>THANH TOAN'</span>
+                </div>
+                <!-- BSTORE-BREADCRUMB END -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <form class="new-account-box" id="submit-checkout" method="post" action="#">
+                    <h3 class="box-subheading">ĐĂNG NHẬP</h3>
+                    <div class="form-content">
+                        <div class="form-group primary-form-group">
+                            <label for="ten-kh">Tên KH</label>
+                            <input type="text" value="@Model.TenKH" name="ten-kh" id="ten-kh" class="form-control input-feild">
+                        </div>
+                        <div class="form-group primary-form-group">
+                            <label for="sdt-kh">SDT</label>
+                            <input type="text" value="@Model.SDT" name="sdt-kh" id="sdt-kh" class="form-control input-feild">
+                        </div>
+                        <div class="form-group primary-form-group">
+                            <label for="diachi-kh">Dia Chi</label>
+                            <input type="text" value="@Model.DiaChi" name="diachi-kh" id="diachi-kh" class="form-control input-feild">
+                        </div>
+                        <div class="alert alert-danger" role="alert" id="alert-text-submitcheckout1">
+                        </div>
+                        <div class="alert alert-success" role="alert" id="alert-text-submitcheckout2">
+                        </div>
+                        <div class="submit-button">
+                            <button type="submit" class="btn main-btn">
+                                <span>
+                                    <i class="fa fa-lock submit-icon"></i>
+                                    Đặt hàng
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#alert-text-submitcheckout1").hide();
+            $("#alert-text-submitcheckout2").hide();
+            $("#submit-checkout").validate({
+                rules: {
+                    "ten-kh": "required",
+                    "sdt-kh": {
+                        required: true,
+                        minlength: 9
+                    },
+                    "diachi-kh": {
+                        required: true,
+                        minlength: 5
+                    }
+                },
+                messages: {
+                    "ten-kh": "Vui lòng nhập tên",
+                    "sdt-kh": {
+                        required: "Vui lòng nhập số điện thoại",
+                        minlength: "Số điện thoại không hợp lệ!"
+                    },
+                    "diachi-kh": "Vui lòng nhập chính xác địa chỉ giao hàng"
+                },
+                submitHandler: function () {
+                    $.post("@Url.Action("SubmitCheckOut", "Cart")",
+                        {
+                            "TenKH": $("#ten-kh").val(),
+                            "SDT": $("#sdt-kh").val(),
+                            "DiaChi": $("#diachi-kh").val()
+                        },
+                        function (data) {
+                            if (data == 1) {
+                                console.log(data);
+                                $("#alert-text-submitcheckout1").show();
+                                $("#alert-text-submitcheckout1").text("Đặt hàng không thành công");
+                            } else {
+                                $("#alert-text-submitcheckout2").show();
+                                $("#alert-text-submitcheckout2").text("Đặt hàng thành công");
+                            }
+                        }
+                    );
+                }
+            });
+        });
+    </script>
+}

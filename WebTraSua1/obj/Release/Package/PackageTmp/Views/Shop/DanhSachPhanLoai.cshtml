@@ -1,0 +1,40 @@
+﻿
+<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+    <div class="all-gategory-product">
+        <div class="row" id="product-list-partial">
+        </div>
+        <div id="load-spinner" align="center">
+            <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif" />
+        </div>
+    </div>
+    <div class="product-shooting-result product-shooting-result-border">
+        <button class="btn showall-button" id="show-more-btn">Show more</button>
+    </div>
+    <!-- PRODUCT-SHOOTING-RESULT END -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            let index = 0;
+            $.get("@Url.Action("DanhSachPartial", "Shop")", {
+                "index": index,
+                "maphanloai": "@ViewBag.phanloai"
+                }, function (data) {
+                    $("#product-list-partial").append(data);
+                    $("#load-spinner").hide();
+                }
+            );
+
+            @*$("#show-more-btn").click(function () {
+                $("#load-spinner").show();
+                $.get("@Url.Action("DanhSachPartial", "Shop")", {
+                    "index": ++index
+                }, function (data) {
+                    $("#product-list-partial").append(data);
+                    $("#load-spinner").hide();
+                });
+            });*@
+        });
+    </script>
+}

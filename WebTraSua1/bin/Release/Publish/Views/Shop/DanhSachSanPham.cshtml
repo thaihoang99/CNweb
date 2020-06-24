@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "Sản phẩm";
+}
+
+<section class="main-content-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!-- BSTORE-BREADCRUMB START -->
+                <div class="bstore-breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span><i class="fa fa-caret-right"></i></span>
+                    <span>DANH SÁCH SẢN PHẨM</span>
+                </div>
+                <!-- BSTORE-BREADCRUMB END -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                <!-- PRODUCT-LEFT-SIDEBAR START -->
+                <div class="product-left-sidebar">
+                    <h2 class="left-title pro-g-page-title">mục lục</h2>
+                    <!-- SINGLE SIDEBAR CATEGORIES START -->
+                    <div class="product-single-sidebar">
+                        <span class="sidebar-title">Sản phẩm</span>
+                        <ul>
+                            <li>
+                                <label class="cheker">
+                                    <input type="checkbox" name="categories" />
+                                    <span></span>
+                                </label>
+                                <a href="@Url.Action("DanhSachPhanLoai", "Shop", new { maphanloai = 1})">Sữa tươi trân châu</a>
+                            </li>
+                            <li>
+                                <label class="cheker">
+                                    <input type="checkbox" name="categories" />
+                                    <span></span>
+                                </label>
+                                <a href="@Url.Action("DanhSachPhanLoai", "Shop", new { maphanloai = 2})">Trà sữa trân châu</a>
+                            </li>
+                            <li>
+                                <label class="cheker">
+                                    <input type="checkbox" name="categories" />
+                                    <span></span>
+                                </label>
+                                <a href="@Url.Action("DanhSachPhanLoai", "Shop", new { maphanloai = 3})">Bánh ngọt</a>
+                            </li>
+                            <li>
+                                <label class="cheker">
+                                    <input type="checkbox" name="categories" />
+                                    <span></span>
+                                </label>
+                                <a href="@Url.Action("DanhSachPhanLoai", "Shop", new { maphanloai = 4})">Kem tươi New Zealand</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- SINGLE SIDEBAR CATEGORIES END -->
+                    <!-- SINGLE SIDEBAR AVAILABILITY START -->
+                    <div class="product-single-sidebar">
+                        <span class="sidebar-title">Loại sản phẩm</span>
+                        <ul>
+                            <li>
+                                <label class="cheker">
+                                    <input type="checkbox" name="availability" />
+                                    <span></span>
+                                </label>
+                                <a href="javascript:void(0)">Bán chạy nhất</a>
+                            </li>
+                            <li>
+                                <label class="cheker">
+                                    <input type="checkbox" name="availability" />
+                                    <span></span>
+                                </label>
+                                <a href="javascript:void(0)">Sản phẩm hot nhất</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- SINGLE SIDEBAR AVAILABILITY END -->
+                    <!-- SINGLE SIDEBAR PRICE START -->
+                    <div class="product-single-sidebar">
+                        <span class="sidebar-title">Price</span>
+                        <ul>
+                            <li>
+                                <label class="cheker">
+                                    <input type="checkbox" name="availability" />
+                                    <span></span>
+                                </label>
+                                <a href="#">Dưới 100k</a>
+                            </li>
+                            <li>
+                                <label class="cheker">
+                                    <input type="checkbox" name="availability" />
+                                    <span></span>
+                                </label>
+                                <a href="#">Từ 100k - 200k</a>
+                            </li>
+                            <li>
+                                <label class="cheker">
+                                    <input type="checkbox" name="availability" />
+                                    <span></span>
+                                </label>
+                                <a href="#">Trên 200k</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- SINGLE SIDEBAR PRICE END -->
+                </div>
+                <!-- PRODUCT-LEFT-SIDEBAR END -->
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                <div class="all-gategory-product">
+                    <div class="row" id="product-list-partial">
+                    </div>
+                    <div id="load-spinner" align="center">
+                        <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif" />
+                    </div>
+                </div>
+                <div class="product-shooting-result product-shooting-result-border">
+                    <button class="btn showall-button" id="show-more-btn">Show more</button>
+                </div>
+                <!-- PRODUCT-SHOOTING-RESULT END -->
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            let index = 0;
+            $.get("@Url.Action("DanhSachPartial", "Shop")", {
+                "index": index,
+                "search": "@ViewBag.search"
+                }, function (data) {
+                    $("#product-list-partial").append(data);
+                    $("#load-spinner").hide();
+                }
+            );
+
+            $("#show-more-btn").click(function () {
+                $("#load-spinner").show();
+                $.get("@Url.Action("DanhSachPartial", "Shop")", {
+                    "index": ++index
+                }, function (data) {
+                    $("#product-list-partial").append(data);
+                    $("#load-spinner").hide();
+                });
+            });
+        });
+    </script>
+}

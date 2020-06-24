@@ -1,0 +1,152 @@
+﻿@model WebTraSua1.Models.Models.SanPham
+
+@{
+    ViewBag.Title = Model.TenSP;
+}
+
+<section class="main-content-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!-- BSTORE-BREADCRUMB START -->
+                <div class="bstore-breadcrumb">
+                    <a href="@Url.Action("Index", "Home")">Home<span><i class="fa fa-caret-right"></i> </span> </a>
+                    <span> <i class="fa fa-caret-right"> </i> </span>
+                    <a href="@Url.Action("DanhSachSanPham", "Shop")"> Danh sách sản phẩm </a>
+                    <span> @Model.TenSP </span>
+                </div>
+                <!-- BSTORE-BREADCRUMB END -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                <!-- SINGLE-PRODUCT-DESCRIPTION START -->
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                        <div class="single-product-view">
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="thumbnail_1">
+                                    <div class="single-product-image">
+                                        <img src="@Model.AnhSP" alt="single-product-image" />
+                                        <a class="new-mark-box" href="#">new</a>
+                                        <a class="fancybox" href="@Model.AnhSP" data-fancybox-group="gallery"><span class="btn large-btn">View larger <i class="fa fa-search-plus"></i></span></a>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="thumbnail_2">
+                                    <div class="single-product-image">
+                                        <img src="@Model.AnhSP" alt="single-product-image" />
+                                        <a class="new-mark-box" href="#">new</a>
+                                        <a class="fancybox" href="@Model.AnhSP" data-fancybox-group="gallery"><span class="btn large-btn">View larger <i class="fa fa-search-plus"></i></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="select-product">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs select-product-tab bxslider">
+                                <li class="active">
+                                    <a href="#thumbnail_1" data-toggle="tab"><img src="@Model.AnhSP" alt="pro-thumbnail" /></a>
+                                </li>
+                                <li>
+                                    <a href="#thumbnail_2" data-toggle="tab"><img src="@Model.AnhSP" alt="pro-thumbnail" /></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
+                        <div class="single-product-descirption">
+                            <h2>@Model.TenSP</h2>
+                            <div class="single-product-review-box">
+                                <div class="rating-box">
+                                    @Model.Rating
+                                    <i class="fa fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="single-product-condition">
+                                <p>Thể loại: @Model.TheLoai.TenTL</p>
+                            </div>
+                            <div class="single-product-price">
+                                <h2>@Model.GiaSP.ToString("#,##0") VNĐ</h2>
+                            </div>
+                            <div class="single-product-quantity">
+                                <p class="small-title">Số lượng</p>
+                                <div class="cart-quantity">
+                                    <div class="cart-plus-minus-button single-qty-btn">
+                                        <input id="item-quantity" class="cart-plus-minus sing-pro-qty" type="text" name="qtybutton" value="1" style="text-align:center">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-product-quantity">
+                                <p class="small-title">SIZE</p>
+                                <select id="product-size" style="width: 100px;"></select>
+                            </div>
+                            <div class="single-product-add-cart">
+                                <a id="add-item" class="add-cart-text" title="Add to cart" href="javascript:void(0);">Thêm vào giỏ hàng</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- SINGLE-PRODUCT-DESCRIPTION END -->
+                <!-- SINGLE-PRODUCT INFO TAB START -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="product-more-info-tab">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs more-info-tab">
+                                <li class="active"><a href="javascipt:void(0)" data-toggle="tab">Mô tả</a></li>
+                                @*<li><a href="#datasheet" data-toggle="tab">data sheet</a></li>*@
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="moreinfo">
+                                    <div class="tab-description">
+                                        <p>@Model.MoTaSP</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- SINGLE-PRODUCT INFO TAB END -->
+            </div>
+            <!-- RIGHT SIDE BAR START -->
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <!-- SINGLE SIDE BAR START -->
+                <div class="single-product-right-sidebar">
+                    <img src="https://phuclong.com.vn/upload/files/EC%20TNL_900%20x%20900.jpg" />
+                </div>
+                <div class="single-product-right-sidebar">
+                    <img src="https://phuclong.com.vn/upload/files/EC%20TNL_900%20x%20900.jpg" />
+                </div>
+                <!-- SINGLE SIDE BAR END -->
+            </div>
+        </div>
+</section>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#add-item").click(function () {
+                $.get("@Url.Action("AddItem", "Cart")", {
+                    "quantity": $("#item-quantity").val(),
+                    "id": "@Model.MaSP",
+                    "size": $("#product-size").val()
+                }, function (data) {
+                    alert("Đã thêm vào giỏ hàng");
+                    window.location.href = "@Url.Action("ChiTietSanPham", "Shop", new { id = Model.MaSP })";
+                });
+            });
+
+            $.get("@Url.Action("GetSize", "Shop")", {
+                "id": "@Model.MaSP"
+            },
+                function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#product-size").append(`<option value="${data[i].MaSize}">${data[i].TenSize}</option>`);
+                    }
+                })
+        });
+    </script>
+}
+

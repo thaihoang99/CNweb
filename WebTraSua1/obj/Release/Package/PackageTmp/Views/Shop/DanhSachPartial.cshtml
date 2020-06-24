@@ -1,0 +1,34 @@
+﻿@model IEnumerable<WebTraSua1.Models.Models.SanPham>
+
+<ul class="gategory-product">
+    @foreach (var item in Model) //model = list<sanpham>
+    {
+        <li class="gategory-product-list col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            <div class="single-product-item">
+                <div class="product-image">
+                    <a href="@Url.Action("ChiTietSanPham", "Shop", new { id = item.MaSP })">
+                        <img src="@item.AnhSP" alt="product-image" />
+                    </a>
+                    <a href="@Url.Action("ChiTietSanPham", "Shop", new { id = item.MaSP })" class="new-mark-box"> NEW </a>
+                    <div class="overlay-content">
+                        <ul>
+                            <li>
+                                <a href="@Url.Action("ChiTietSanPham", "Shop", new { id = item.MaSP })" title="Quick view"><i class="fa fa-search"></i></a>
+                            </li>
+                            @*<li><a id="add-item" href="javascript:void(0)" title="Add to cart"><i class="fa fa-shopping-cart"></i></a></li>*@
+                            @*<li><a href="#" title="Like"><i class="fa fa-heart-o"></i></a></li>*@
+                        </ul>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <span class="rate"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span>
+
+                    <a href="@Url.Action("ChiTietSanPham", "Shop", new { id = item.MaSP })">@item.TenSP</a>
+                    <div class="price-box">
+                        <span class="price">@item.GiaSP.ToString("#,##0") VNĐ</span>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

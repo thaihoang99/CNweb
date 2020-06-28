@@ -74,11 +74,13 @@
                             <p>
                                 Đăng ký email để nhận được các thông tin mới nhất.
                             </p>
-                            <form action="#">
+                            <form action="#" id="create-new-email">
                                 <div class="form-group newsletter-form-group">
-                                    <input type="text" class="form-control newsletter-form"
+                                    <input id="reg-email" type="text" class="form-control newsletter-form"
                                            placeholder="Enter your e-mail">
-                                    <input type="submit" class="newsletter-btn" name="submit" value="Đăng ký" />
+                                    <div>
+                                        <button id="submit-email" type="submit" class="newsletter-btn" name="submit"> Đăng ký</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -287,3 +289,43 @@
     </div>
 </footer>
 <!-- COPYRIGHT-AREA END -->
+
+@section scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#create-new-email").validate({
+                rules: {
+                    "reg-email": {
+                        required: true,
+                        minlength: 6
+                    }
+                },
+                messages: {
+                    "reg-email": {
+                        required: "Vui lòng nhập email",
+                        minlength: "Email không hợp lệ!"
+                    }
+                }
+            });
+
+            $("#submit-email").click(function () {
+
+                $.post("@Url.Action("DangKy", "Customer")",
+                    {
+                        "EmailKH": $("#reg-email").val()
+                    },
+                    function (data) {
+                        if (data == 1) {
+                            console.log(data);
+                            alert("Đăng ký thành công");
+                        } else {
+                            alert("Đăng ký không thành công");
+                        }
+                    }
+                );
+            });
+        });
+    </script>
+}
